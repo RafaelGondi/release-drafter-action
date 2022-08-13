@@ -1,0 +1,19 @@
+name: Generate release notes
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # Fetches entire history, so we can analyze commits
+          fetch-depth: 0
+      - name: Generate release notes
+        id: release_notes
+        uses: fresa/release-notes-generator@master
+        with:
+          version: v2.0.0
+          last_release_ref: v1.0.1
+          release_ref: v2.0.0
+          path_to_commits: ./commits.json
+      - run: echo "${{ steps.release_notes.outputs.release_notes }}"
